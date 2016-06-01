@@ -115,10 +115,10 @@ AppPreferences.prototype.fetch = platform.fetch || function (
 			successCallback = resolve;
 		}
 
-		if (platform.nativeFetch) {
-			return platform.nativeFetch(_successCallback, reject, args);
+		if (platform.nativeExec) {
+			return platform.nativeExec(_successCallback, reject, "AppPreferences", "fetch", [args]);
 		}
-		return platform.nativeExec(_successCallback, reject, "AppPreferences", "fetch", [args]);
+		return platform.nativeFetch(_successCallback, reject, args);
 	}
 
 	if (promise) {
@@ -175,10 +175,10 @@ AppPreferences.prototype.store = platform.store || function (
 			return reject ();
 		}
 
-		if (platform.nativeStore) {
-			return platform.nativeStore (resolve, reject, args);
+		if (platform.nativeExec) {
+			return platform.nativeExec (resolve, reject, "AppPreferences", "store", [args]);
 		}
-		return platform.nativeExec (resolve, reject, "AppPreferences", "store", [args]);
+		return platform.nativeStore (resolve, reject, args);
 	}
 
 	if (promise) {
@@ -216,10 +216,10 @@ AppPreferences.prototype.remove = platform.remove || function (
 			return reject ();
 		}
 
-		if (platform.nativeRemove) {
-			return platform.nativeRemove (resolve, reject, args);
+		if (platform.nativeExec) {
+			return platform.nativeExec (resolve, reject, "AppPreferences", "remove", [args]);
 		}
-		return platform.nativeExec (resolve, reject, "AppPreferences", "remove", [args]);
+		return platform.nativeRemove (resolve, reject, args);
 	}
 
 	if (promise) {
@@ -380,4 +380,3 @@ function getFormFields (formEl, formData) {
 if (typeof module !== "undefined") {
 	module.exports = new AppPreferences();
 }
-
