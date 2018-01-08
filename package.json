@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-app-preferences",
-  "version": "0.7.7",
+  "version": "0.99.3",
   "description": "Application preferences plugin and preference pane generator",
   "cordova": {
     "id": "cordova-plugin-app-preferences",
@@ -45,7 +45,7 @@
     "cordova-blackberry10"
   ],
   "author": "Ivan Baktsheev",
-  "license": "Apache",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/apla/me.apla.cordova.app-preferences/issues"
   },

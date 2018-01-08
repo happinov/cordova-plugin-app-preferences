@@ -1,30 +1,21 @@
-Application preferences Cordova plugin.
+Application preferences plugin for Cordova 3+
 -----------------------
 
 Why you should use this plugin?
 
  * Cordova + Promise interface out of the box
- * Supports many platforms (Android, iOS, Windows and local storage fallback)
+ * Supports many platforms (Android, iOS/macOS, Windows and local storage fallback)
  * Have tests
+ (iOS: [![iOS and browser status](https://travis-ci.org/apla/me.apla.cordova.app-preferences.svg)](https://travis-ci.org/apla/me.apla.cordova.app-preferences),
+ Android: [![Android status](https://circleci.com/gh/apla/me.apla.cordova.app-preferences.svg?&style=shield&circle-token=f3e5e46c1a698c62f0450bf1d25a3694d4f714c6)](https://circleci.com/gh/apla/me.apla.cordova.app-preferences),
+ Windows: [![Windows status](https://ci.appveyor.com/api/projects/status/gl3qxq2o728sqbev?svg=true)](https://ci.appveyor.com/project/apla/me-apla-cordova-app-preferences),
+ Browser: [![iOS and browser status](https://travis-ci.org/apla/me.apla.cordova.app-preferences.svg)](https://travis-ci.org/apla/me.apla.cordova.app-preferences))
  * Supports simple and complex data structures
  * Supports removal of the keys
  * Have preference pane generator for application (for Android and iOS) and can show native preferences
- * (Alpha) preference change notification #37
-
-For Cordova 3+
-
-[![iOS status](https://travis-ci.org/apla/me.apla.cordova.app-preferences.svg)](https://travis-ci.org/apla/me.apla.cordova.app-preferences)
-[![Android status](https://circleci.com/gh/apla/me.apla.cordova.app-preferences.svg?&style=shield&circle-token=f3e5e46c1a698c62f0450bf1d25a3694d4f714c6)](https://circleci.com/gh/apla/me.apla.cordova.app-preferences)
-[![Windows status](https://ci.appveyor.com/api/projects/status/gl3qxq2o728sqbev?svg=true)](https://ci.appveyor.com/project/apla/me-apla-cordova-app-preferences)
-
-Upgrade
----
-
-Please note that plugin id is changed for npm publishing, so if you used
-this plugin before cordova@5.0.0, you'll have to reinstall it:
-
-	$ cordova plugin rm me.apla.cordova.app-preferences
-	$ cordova plugin add cordova-plugin-app-preferences
+ * (Untested) reference change notification [#37](apla/me.apla.cordova.app-preferences#37)
+ * (Untested) named preferences files for android and iOS suites [#97](apla/me.apla.cordova.app-preferences#97)
+ * (Untested) synchronized preferences via iCloud or windows roaming [#75](apla/me.apla.cordova.app-preferences#75)
 
 Installing
 ---
@@ -41,6 +32,8 @@ From a local clone:
 
 	$ cordova plugin add /path/to/me.apla.cordova.app-preferences/folder
 
+
+https://github.com/apla/me.apla.cordova.app-preferences/issues/97
 
 More information:
 [Command-line Interface Guide](http://cordova.apache.org/docs/en/edge/guide_cli_index.md.html#The%20Command-line%20Interface).
@@ -85,37 +78,58 @@ prefs.show (ok, fail);
 // fetch the value for a key using promise
 prefs.fetch ('key').then (ok, fail);
 
-// support for iOS suites (untested)
-var suitePrefs = prefs.iosSuite ("suiteName");
+```
+
+[Suites](wiki/Suites)
+
+```javascript
+
+// support for iOS suites or android named preference files (untested)
+var suitePrefs = prefs.suite ("suiteName");
 suitePrefs.fetch (...);
 suitePrefs.store (...);
+
+// store preferences in synchronized cloud storage for iOS and windows
+var cloudSyncedPrefs = prefs.cloudSync ();
+cloudSyncedPrefs.fetch (...);
+cloudSyncedPrefs.store (...);
 
 ```
 
 Platforms
 ---
-1. Native execution on iOS / OSX using `NSUserDefaults`
-1. Native execution on Android using `android.content.SharedPreferences`
-1. Native execution on Windows Phone using `IsolatedStorageSettings.ApplicationSettings`
-1. Native execution on Windows 8 using `IsolatedStorageSettings.ApplicationSettings`
+1. Native execution on iOS/macOS using `NSUserDefaults` — docs for [iOS](https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/Classes/NSUserDefaults_Class/index.html) / [macOS](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSUserDefaults_Class/index.html)
+1. Native execution on Android using `android.content.SharedPreferences` — [docs](https://developer.android.com/reference/android/content/SharedPreferences.html)
+1. Native execution on Windows Universal Platform using `Windows.Storage.ApplicationData` — [docs](https://msdn.microsoft.com/en-us/windows.storage.applicationdata)
+1. Native execution on Windows Phone 7 using `IsolatedStorageSettings.ApplicationSettings` — [docs](https://msdn.microsoft.com/library/system.io.isolatedstorage.isolatedstoragesettings.applicationsettings\(vs.95\).aspx)
 1. Execution on BlackBerry10 fallback using `localStorage`
 
 Notes
 ---
-1. iOS, OSX, Android and Windows Phone basic values (`string`, `number`, `boolean`) are stored using typed fields.
+1. iOS, macOS, Android and Windows Phone basic values (`string`, `number`, `boolean`) are stored using typed fields.
 1. Complex values, such as arrays and objects, are always stored using JSON notation.
 1. Dictionaries are supported on iOS and Windows 8 only, so on other platforms instead of using the real dictionary a composite key will be written like `<dict>.<key>`
-1. On iOS/OSX dictionaries just a key, so appPrefs.store ('dict', 'key', value) and appPrefs.store ('dict', {'key': value}) have same meaning (but different result).
+1. On iOS/macOS dictionaries just a key, so appPrefs.store ('dict', 'key', value) and appPrefs.store ('dict', {'key': value}) have same meaning (but different result).
 
 Tests
 ---
 Tests are available in `src/test.js`. After installing plugin you can add test code from this file and then launch `testPlugin()` function.
 
- * iOS pass locally, Travis: ![iOS status](https://travis-ci.org/apla/me.apla.cordova.app-preferences.svg)
+ * iOS pass locally, Travis: ![iOS and browser status](https://travis-ci.org/apla/me.apla.cordova.app-preferences.svg)
  * Android pass locally, CircleCI: ![Android status](https://circleci.com/gh/apla/me.apla.cordova.app-preferences.svg?&style=shield&circle-token=f3e5e46c1a698c62f0450bf1d25a3694d4f714c6)
  * BlackBerry 10 pass locally
  * Windows Phone 8 tests pass locally, Appveyor: ![Windows status](https://ci.appveyor.com/api/projects/status/gl3qxq2o728sqbev?svg=true)
- * Browser pass locally
+ * Browser pass locally, Travis: ![iOS and browser status](https://travis-ci.org/apla/me.apla.cordova.app-preferences.svg)
+
+Module update for cordova < 5.x
+---
+
+Please note that plugin id is changed for npm publishing, so if you used
+this plugin before cordova@5.0.0, you'll have to reinstall it:
+
+$ cordova plugin rm me.apla.cordova.app-preferences
+$ cordova plugin add cordova-plugin-app-preferences
+
 
 Show Preference pane
 ---
@@ -153,7 +167,7 @@ if it came from previous version of plugin.
 * switch - not tested
 * textfield - not tested
 
-TODO: Windows Phone ([guide](http://blogs.msdn.com/b/glengordon/archive/2012/09/17/managing-settings-in-windows-phone-and-windows-8-store-apps.aspx), [docs](https://msdn.microsoft.com/en-US/library/windows/apps/ff769510\(v=vs.105\).aspx))
+TODO: Preferences UI for Windows Phone ([guide](http://blogs.msdn.com/b/glengordon/archive/2012/09/17/managing-settings-in-windows-phone-and-windows-8-store-apps.aspx), [docs](https://msdn.microsoft.com/en-US/library/windows/apps/ff769510\(v=vs.105\).aspx))
 
 Credits
 ---
