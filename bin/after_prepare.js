@@ -2,7 +2,7 @@
 
 module.exports = function (context) {
 	var req = context.requireCordovaModule,
-		Q = req('q'),
+		Q = require('q'),
 		path = req('path'),
 		ET = req('elementtree'),
 		cordova = req('cordova'),

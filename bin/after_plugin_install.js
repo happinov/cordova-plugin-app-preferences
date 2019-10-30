@@ -2,7 +2,7 @@
 
 module.exports = function (context) {
 	var req = context.requireCordovaModule,
-		Q = req('q'),
+		Q = require('q'),
 		path = req('path'),
 		fs = require("./lib/filesystem")(Q, req('fs'), path),
 		settings = require("./lib/settings")(fs, path),
